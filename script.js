@@ -26,4 +26,4 @@ function verificarTema() {
     }
 }
 
-verificarTema()
+verificarTema(body)
