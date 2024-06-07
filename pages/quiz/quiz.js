@@ -6,7 +6,7 @@ const assunto = localStorage.getItem("assunto")
 
 let quiz = {}
 let pontos = 0
-let pergunta = 5
+let pergunta = 1
 let resposta = ""
 let idInputResposta = ""
 let respostaCorretaId = ""
@@ -95,13 +95,13 @@ function montarPergunta() {
                 </label>
             </form>
 
-            <button>Enviar</button>
+            <button>Responder</button>
         </section>
     `
 }
 
 function alterarSinais(texto) {
-    return texto.replace(/</g, "&lt;").replace(/>/g, "&gt")
+    return texto.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 }
 
 function guardarResposta(evento) {
@@ -113,6 +113,17 @@ function guardarResposta(evento) {
 }
 
 function validarResposta() {
+    const botaoEnviar = document.querySelector(".alternativas button")
+    botaoEnviar.innerText = "Próxima"
+    botaoEnviar.removeEventListener("click", validarResposta)
+
+    if (pergunta === 10) {
+        botaoEnviar.innerText = "Finalizar"
+        botaoEnviar.removeEventListener("click", finalizar())
+    } else {
+        botaoEnviar.addEventListener("click", proximaPergunta)
+    }
+
     if (resposta === quiz.questions[pergunta-1].answer) {
         document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "certa")
         pontos = pontos + 1
@@ -120,13 +131,21 @@ function validarResposta() {
         document.querySelector(`label[for='${idInputResposta}']`).setAttribute("id", "errada")
         document.querySelector(`label[for='${respostaCorretaId}']`).setAttribute("id", "certa")
     }
+
+    pergunta = pergunta + 1
 }
 
-async function iniciar() {
-    alterarAssunto()
-    await buscarPerguntas()
-    montarPergunta()
+function finalizar() {
+    localStorage.setItem("pontos", pontos)
+    window.location.href = "../resultado/resultado.html"
+}
 
+function proximaPergunta() {
+    montarPergunta()
+    adicionarEventoInput()
+}
+
+function adicionarEventoInput() {
     const inputResposta = document.querySelectorAll(".alternativas input")
     inputResposta.forEach(input => {
         input.addEventListener("click", guardarResposta)
@@ -135,6 +154,13 @@ async function iniciar() {
             respostaCorretaId = input.id
         }
     })
+}
+
+async function iniciar() {
+    alterarAssunto()
+    await buscarPerguntas()
+    montarPergunta()
+    adicionarEventoInput()
 }
 
 iniciar()
