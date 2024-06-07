@@ -1,29 +1,10 @@
-let tema = "claro"
+import { trocaTema, verificarTema } from "./helpers/tema-helpers.js"
 
+const botaoTema = document.querySelector(".tema button")
 const body = document.querySelector("body")
 
-function trocaTema() {
-    if (localStorage.getItem("tema")) {
-        tema = localStorage.getItem("tema")
-    }
+botaoTema.addEventListener("click", () => {
+    trocaTema(body, botaoTema)
+})
 
-    if (tema === "claro") {
-        body.classList.add("escuro")
-        localStorage.setItem("tema", "escuro")
-    } else {
-        body.classList.remove("escuro")
-        localStorage.setItem("tema", "claro")
-    }
-}
-
-function verificarTema() {
-    if (localStorage.getItem("tema")) {
-        tema = localStorage.getItem("tema")
-    }
-
-    if (tema === "escuro") {
-        body.classList.add("escuro")
-    }
-}
-
-verificarTema()
+verificarTema(body, botaoTema)
