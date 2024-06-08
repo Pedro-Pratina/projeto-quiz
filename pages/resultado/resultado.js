@@ -35,8 +35,6 @@ function inserirResultado() {
         <strong>${pontos}</strong>
 
         <p>de 10</p>
-
-        <button><a href="../../index.html">Jogar novamente</a></button>
     `
 }
 
