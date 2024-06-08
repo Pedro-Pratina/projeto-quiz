@@ -20,3 +20,9 @@ function selecionarAssunto(evento) {
     localStorage.setItem("assunto", assunto)
     window.location.href = "./pages/quiz/quiz.html"
 }
+
+function resetQuizSave() {
+    localStorage.removeItem("assunto")
+    localStorage.removeItem("pontos")
+    console.log("removido")
+}
